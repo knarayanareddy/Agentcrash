@@ -171,6 +171,14 @@ We would rather state these than have a judge find them.
 | `npm run build` | pass |
 | Three live scenarios over HTTP | ALLOW + mock commit / BLOCK + capability denied / REVIEW + escalation |
 | Offline verify on a live workpaper | pass; forging the committed amount fails with a named check |
+| `npm audit --omit=dev` (production deps) | **0 vulnerabilities** |
+| `npm audit` (including dev) | 9 (4 moderate, 5 high, 0 critical) |
+
+The one **critical** advisory in the original snapshot was `next` (range `9.3.4-canary.0 - 16.3.7`).
+Next, `eslint-config-next` and `postcss` were upgraded to 16.4.2 / 16.4.2 / 8.5.31 and the full
+check suite was re-run afterwards. All 9 remaining advisories are **development-only**: five are a
+single transitive lint chain (`braces` → `micromatch` → `fast-glob` → `@next/eslint-plugin-next` →
+`eslint-config-next`) and none are in the production dependency graph.
 
 ## 9. Governance framing
 

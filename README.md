@@ -136,6 +136,16 @@ Finally, open **MiroFish** and play the preserved 36-ticket rehearsal: watchdog 
 - The 36-ticket rehearsal is a **preserved deterministic simulation** whose narrative names a real company as a scenario setting. It does not represent that company's policy, and its rewrites are predefined rather than model-generated.
 - No external refunds, no external agents, no real payment processor. `externalPaymentExecuted` is structurally always `false`.
 
+## Dependency posture
+
+`npm audit --omit=dev` reports **0 vulnerabilities** for the production graph. The one **critical**
+advisory in the original snapshot was `next` (`9.3.4-canary.0 - 16.3.7`); `next`,
+`eslint-config-next` and `postcss` are now 16.4.2 / 16.4.2 / 8.5.31. The 9 advisories `npm audit`
+still reports with dev dependencies included are development-only — five of them a single transitive
+lint chain (`braces` → `micromatch` → `fast-glob` → `@next/eslint-plugin-next` →
+`eslint-config-next`). Re-run `npm audit` after any dependency change; the guidance to bind to
+loopback still applies regardless.
+
 ## Governance framing
 
 EU AI Act Art. 14 (human oversight) · NOREA / IIA · ISA 230 (audit documentation and re-performance) · ForHumanity · SAAF Shared Audit Agents Framework.
