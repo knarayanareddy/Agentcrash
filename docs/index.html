@@ -35,11 +35,40 @@
     </p>
     <p class="cta">
       <a class="btn" href="#playground">Run the real guard in your browser</a>
+      <a class="btn ghost" href="#demo">Watch the demo (4:56)</a>
       <a class="btn ghost" href="TECHEX-SUBMISSION.md">Read the write-up</a>
     </p>
     <p class="note">
       The guard below is not a re-implementation. It is the same TypeScript the
       server runs, bundled unmodified and executing on this page.
+    </p>
+  </div>
+</section>
+
+<section id="demo" class="sec">
+  <div class="wrap">
+    <h2>Watch the demo</h2>
+    <p class="seclede">
+      Four minutes fifty-six seconds, end to end: the three scenarios, a drift
+      quarantine, and the workpaper being tampered with and caught.
+    </p>
+    <figure class="video">
+      <video controls preload="metadata" src="saaf-demo.mp4"></video>
+      <figcaption>
+        Every number, verdict and hash on screen was read from evidence captured
+        from a running server against PostgreSQL — none of it is invented
+        output. Recorded against commit <code>b9cc6d5</code>.
+      </figcaption>
+    </figure>
+    <p class="vlink">
+      <a class="btn ghost" href="saaf-demo.mp4">Download the video (13&nbsp;MB)</a>
+      <a class="btn ghost" href="LIVE-VERIFICATION.md">Read the verification record</a>
+    </p>
+    <p class="note">
+      Two caveats about the recording, stated rather than hidden: the proposal
+      endpoint it talks to is a local test double, not a language model — the
+      HTTP proposal path is real, the model is not. And the ledger is a mock
+      table, so no payment is made anywhere in it.
     </p>
   </div>
 </section>

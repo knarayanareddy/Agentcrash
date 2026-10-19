@@ -42,6 +42,11 @@ h1 em{font-style:normal;color:var(--orange)}
 .btn:hover{background:#ff8f3d;text-decoration:none}
 .btn.ghost{background:transparent;color:var(--fg);border-color:var(--line)}
 .btn.ghost:hover{border-color:var(--dim);text-decoration:none}
+.video{margin:0}
+.video video{width:100%;display:block;background:#000;border:1px solid var(--line);border-radius:10px}
+.video figcaption{margin-top:12px;color:var(--dim);font-size:14px;line-height:1.65}
+.video figcaption code{font-size:13px;color:var(--fg)}
+.vlink{margin-top:18px;display:flex;gap:12px;flex-wrap:wrap}
 .note{color:var(--dim);font-size:14px;max-width:78ch;margin:14px 0 0}
 
 /* sections */
