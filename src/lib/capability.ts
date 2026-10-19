@@ -18,6 +18,14 @@ export type EnvBag = Record<string, string | undefined>;
 export const TOOL_ALLOWLIST = ["execute_refund"] as const;
 export type AllowedTool = (typeof TOOL_ALLOWLIST)[number];
 
+/**
+ * Stand-in recorded when the model proposes no usable tool name (empty string
+ * or a value that failed schema validation). Lives here rather than in
+ * ticket-lab.ts so the verifier can bind the tool chain against the same
+ * constant without importing the orchestrator and creating a cycle.
+ */
+export const UNSPECIFIED_TOOL = "UNSPECIFIED";
+
 export function isAllowedTool(name: unknown): name is AllowedTool {
   return typeof name === "string" && (TOOL_ALLOWLIST as readonly string[]).includes(name);
 }

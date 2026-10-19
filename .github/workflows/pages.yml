@@ -1,0 +1,54 @@
+name: Deploy Pages
+
+# Publishes docs/ to GitHub Pages. The site is fully static: the guard
+# playground runs the shipped src/lib code, bundled ahead of time into
+# docs/saaf-guard.js, so CI needs no Node build step.
+#
+# Rebuild the bundle after changing any src/lib policy module:
+#   npm run pages:build
+
+# Manual only. Enabling GitHub Pages requires a one-time click in
+# Settings -> Pages that an integration token cannot perform, so this must not
+# run on every push (it would fail until Pages is enabled).
+#
+# To use: Settings -> Pages -> Source: "GitHub Actions", then run this workflow
+# from the Actions tab. If you instead chose "Deploy from a branch" (branch
+# arena/378e58f3-agentcrash, folder /docs) you do not need this at all.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

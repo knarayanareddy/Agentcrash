@@ -68,7 +68,12 @@ type LabResult = {
     reason: string;
     mockLedger: { entryId: string; amountCents: number; status: string; externalPaymentExecuted: boolean } | null;
   };
-  customerResponse: { templateId: string; policyClauseIds: string[]; text: string };
+  customerResponse: {
+    templateId: string;
+    policyClauseIds: string[];
+    text: string;
+    previewNotice: string;
+  };
   jev: {
     status: string;
     model: string | null;
@@ -372,12 +377,15 @@ export function TicketLab({ fixtures, policy }: { fixtures: LabFixture[]; policy
                 </p>
               </Block>
 
-              <Block title="Customer response (approved template)">
+              <Block title="Customer response (approved template · simulated, not sent)">
                 <p className="font-mono text-[11px] text-[#9aa3b2]">
                   {result.customerResponse.templateId} · clauses{" "}
                   {result.customerResponse.policyClauseIds.length > 0
                     ? result.customerResponse.policyClauseIds.join(", ")
                     : "none"}
+                </p>
+                <p className="mt-1 break-words text-[11px] text-amber-300">
+                  {result.customerResponse.previewNotice}
                 </p>
                 <p className="mt-2 break-words text-sm">{result.customerResponse.text}</p>
               </Block>

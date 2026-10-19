@@ -9,7 +9,8 @@
     "typecheck": "tsc --noEmit",
     "db:migrate": "node scripts/migrate.mjs",
     "db:push": "drizzle-kit push --config=drizzle.config.ts",
-    "test": "node scripts/test.mjs"
+    "test": "node scripts/test.mjs",
+    "pages:build": "node docs/playground/build.mjs"
   },
   "dependencies": {
     "dotenv": "17.3.1",

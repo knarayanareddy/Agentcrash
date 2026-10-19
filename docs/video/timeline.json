@@ -1,0 +1,106 @@
+{
+  "fps": 30,
+  "rate": 44100,
+  "channels": 2,
+  "scenes": [
+    {
+      "scene": "01-title",
+      "samples": 513801,
+      "seconds": 11.6508,
+      "frames": 350,
+      "start": 0.0,
+      "head": 0.35,
+      "tail": 0.55
+    },
+    {
+      "scene": "02-problem",
+      "samples": 1217289,
+      "seconds": 27.6029,
+      "frames": 828,
+      "start": 11.6508,
+      "head": 0.35,
+      "tail": 0.55
+    },
+    {
+      "scene": "03-loop",
+      "samples": 1028873,
+      "seconds": 23.3305,
+      "frames": 700,
+      "start": 39.2537,
+      "head": 0.35,
+      "tail": 0.55
+    },
+    {
+      "scene": "04-policy",
+      "samples": 943881,
+      "seconds": 21.4032,
+      "frames": 642,
+      "start": 62.5842,
+      "head": 0.35,
+      "tail": 0.55
+    },
+    {
+      "scene": "05-trust",
+      "samples": 831241,
+      "seconds": 18.849,
+      "frames": 565,
+      "start": 83.9874,
+      "head": 0.35,
+      "tail": 0.55
+    },
+    {
+      "scene": "06-allowlist",
+      "samples": 814345,
+      "seconds": 18.4659,
+      "frames": 554,
+      "start": 102.8364,
+      "head": 0.35,
+      "tail": 0.55
+    },
+    {
+      "scene": "07-s1",
+      "samples": 1017609,
+      "seconds": 23.075,
+      "frames": 692,
+      "start": 121.3023,
+      "head": 0.35,
+      "tail": 0.55
+    },
+    {
+      "scene": "08-s2",
+      "samples": 1233673,
+      "seconds": 27.9744,
+      "frames": 839,
+      "start": 144.3773,
+      "head": 0.35,
+      "tail": 0.55
+    },
+    {
+      "scene": "09-s3",
+      "samples": 592649,
+      "seconds": 13.4388,
+      "frames": 403,
+      "start": 172.3517,
+      "head": 0.35,
+      "tail": 0.55
+    },
+    {
+      "scene": "10-drift",
+      "samples": 517385,
+      "seconds": 11.7321,
+      "frames": 352,
+      "start": 185.7905,
+      "head": 0.35,
+      "tail": 0.55
+    },
+    {
+      "scene": "15-close",
+      "samples": 308700,
+      "seconds": 7.0,
+      "frames": 210,
+      "start": 197.5226,
+      "head": 0.35,
+      "tail": 0.55
+    }
+  ]
+}

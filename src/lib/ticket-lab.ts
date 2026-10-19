@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { eq, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { checkpoints, sentinelSessions, ticketEvents, workpapers } from "@/db/schema";
-import { evaluateCapability } from "@/lib/capability";
+import { evaluateCapability, UNSPECIFIED_TOOL } from "@/lib/capability";
 import { DEMO_POLICY, demoPolicyCanonicalHash } from "@/lib/demo-policy";
 import { dispatchToolCall } from "@/lib/dispatcher";
 import { hashPrompt } from "@/lib/hash";
@@ -28,7 +28,10 @@ import { isCents } from "@/lib/money";
 import { GENESIS_PROMPT, genesisPromptHash } from "@/lib/policy";
 import { evaluatePolicyGuard, type PolicyGuardInput } from "@/lib/policy-guard";
 import { proposeFromCustomerMessage, type ModelProposal } from "@/lib/proposal-model";
-import { approvedCustomerResponse } from "@/lib/response-templates";
+import {
+  approvedCustomerResponse,
+  RESPONSE_PREVIEW_NOTICE,
+} from "@/lib/response-templates";
 import { calculateDrift } from "@/lib/sentinel";
 import { getTicketFixture, type TicketFixture } from "@/lib/ticket-fixtures";
 
@@ -75,7 +78,8 @@ export type TicketLabMetrics = {
   jevLatencyMs: number;
 };
 
-const UNSPECIFIED_TOOL = "UNSPECIFIED";
+// UNSPECIFIED_TOOL now lives in capability.ts so the verifier can bind the
+// tool chain against the same constant without importing this orchestrator.
 
 export function parseTicketLabInput(value: unknown): TicketLabInput | null {
   if (!value || typeof value !== "object" || Array.isArray(value)) return null;
@@ -499,7 +503,10 @@ export async function processTicketLab(input: TicketLabInput) {
         reason: dispatch.reason,
         mockLedger: dispatch.mockLedger,
       },
-      customerResponse: response,
+      // previewNotice is presentation only. It is deliberately NOT part of
+      // CustomerResponse, so it stays out of the workpaper record and does not
+      // affect any hash the verifier checks.
+      customerResponse: { ...response, previewNotice: RESPONSE_PREVIEW_NOTICE },
       verdict,
       action,
       reason,
