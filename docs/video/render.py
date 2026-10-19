@@ -612,6 +612,152 @@ def sc_ledger(d, t, E):
              tuple(int(v * a4) for v in FG), 1640, 32)
 
 
+def sc_jev(d, t, E):
+    """The judgment layer, then the guard's veto over it."""
+    r = E["runs"][1]           # TKT-4402: the case the guard blocks
+    jev = r["jev"]
+    guard = r["policyGuard"]
+
+    header(d, "Judgment layer", "Containment judgment, then the guard decides", BLUE)
+    accent_bar(d, BLUE)
+
+    # left: what the judgment layer returned
+    a = appear(t, 0.5, 0.6)
+    if a > 0:
+        panel(d, [96, 220, 940, 640], outline=tuple(int(v * a) for v in BLUE))
+        txt(d, (136, 254), "CONTAINMENT JUDGMENT", font(F_BOLD, 18),
+            tuple(int(v * a) for v in DIM))
+        txt(d, (136, 300), "TKT-4402", font(F_MONOB, 30), tuple(int(v * a) for v in FG))
+        txt(d, (136, 352), "status  " + str(jev.get("status")), font(F_MONO, 22),
+            tuple(int(v * a) for v in FG))
+        txt(d, (136, 388), "model   " + str(jev.get("model")), font(F_MONO, 22),
+            tuple(int(v * a) for v in FG))
+        txt(d, (136, 424), "latency " + str(jev.get("latencyMs")) + " ms",
+            font(F_MONO, 22), tuple(int(v * a) for v in FG))
+
+        # three-way probabilities as bars
+        probs = jev.get("probabilities") or {}
+        yy = 476
+        for key, col in (("allow", TEAL), ("human", AMBER), ("quarantine", RED)):
+            pv = float(probs.get(key, 0) or 0)
+            txt(d, (136, yy), key, font(F_MONO, 20), tuple(int(v * a) for v in DIM))
+            d.rectangle([300, yy + 4, 700, yy + 22], fill=(30, 38, 50))
+            d.rectangle([300, yy + 4, 300 + int(400 * min(pv, 1)), yy + 22],
+                        fill=tuple(int(v * a) for v in col))
+            txt(d, (716, yy + 2), "%.2f" % pv, font(F_MONO, 19),
+                tuple(int(v * a) for v in col))
+            yy += 44
+
+    # right: the guard keeps veto power regardless
+    a2 = appear(t, 3.4, 0.6)
+    if a2 > 0:
+        panel(d, [1000, 220, 1824, 640], outline=tuple(int(v * a2) for v in RED))
+        txt(d, (1040, 254), "THE GUARD DECIDES, NOT THE JUDGMENT", font(F_BOLD, 18),
+            tuple(int(v * a2) for v in RED))
+        txt(d, (1040, 300), guard["disposition"], font(F_MONOB, 34),
+            tuple(int(v * a2) for v in RED))
+        yy = 366
+        for f in guard.get("findings", [])[:5]:
+            col = {"BLOCK": RED, "REVIEW": AMBER}.get(f["disposition"], DIM)
+            chip(d, 1040, yy, f["disposition"],
+                 tuple(int(v * a2) for v in col), size=15)
+            txt(d, (1140, yy + 2), f["ruleId"], font(F_MONO, 19),
+                tuple(int(v * a2) for v in FG))
+            yy += 40
+        txt(d, (1040, 590), "verdict  " + r["verdict"], font(F_MONO, 20),
+            tuple(int(v * a2) for v in FG))
+
+    # bottom: the ordering, which is the actual point
+    a3 = appear(t, 7.2, 0.7)
+    if a3 > 0:
+        panel(d, [96, 700, 1824, 880], fill=(14, 24, 40),
+              outline=tuple(int(v * a3) for v in BLUE))
+        chain = ["model proposes", "judgment layer scores", "guard may veto",
+                 "capability allowlist", "dispatch"]
+        x = 150
+        for i, s in enumerate(chain):
+            col = RED if s == "guard may veto" else FG
+            txt(d, (x, 762), s, font(F_BOLD, 22), tuple(int(v * a3) for v in col))
+            if i < len(chain) - 1:
+                txt(d, (x + d.textlength(s, font(F_BOLD, 22)) + 16, 762), "→",
+                    font(F_BOLD, 22), tuple(int(v * a3) for v in DIM))
+            x += d.textlength(s, font(F_BOLD, 22)) + 60
+        para(d, (150, 812),
+             "The judgment layer is advisory. Veto sits with the deterministic "
+             "guard, in code, on every path.",
+             font(F_SANS, 24), tuple(int(v * a3) for v in FG), 1600, 32)
+
+
+def sc_rehearsal(d, t, E):
+    """36 tickets, same injected drift, watchdog off versus on."""
+    R = E["rehearsal"]
+    off, on = R["watchdog_off"], R["watchdog_on"]
+    so, sn = off["stats"], on["stats"]
+
+    header(d, "Long horizon", "Thirty-six tickets, watchdog off versus on", TEAL)
+    accent_bar(d, TEAL)
+    txt(d, (96, 200), f"{R['ticketCount']} tickets · identical injected drift · "
+                      "same scripted prompt and memory erosion",
+        font(F_SANS, 24), DIM)
+
+    rows = [
+        ("Refunds against policy", f"{so['refundsAgainstPolicy']}", f"{sn['refundsAgainstPolicy']}"),
+        ("Paid against policy", f"€{so['paidAgainstPolicyEur']:.2f}", f"€{sn['paidAgainstPolicyEur']:.2f}"),
+        ("Paid compliant", f"€{so['paidCompliantEur']:.2f}", f"€{sn['paidCompliantEur']:.2f}"),
+        ("Peak drift", f"{so['maxDriftScore']:.2f}", f"{sn['maxDriftScore']:.2f}"),
+        ("Quarantines", f"{so['quarantines']}", f"{sn['quarantines']}"),
+        ("Checkpoint restores", f"{so['rollbacks']}", f"{sn['rollbacks']}"),
+        ("Routes to a human", f"{so['humanRoutes']}", f"{sn['humanRoutes']}"),
+    ]
+
+    # column heads
+    a0 = appear(t, 0.5, 0.5)
+    if a0 > 0:
+        panel(d, [96, 250, 940, 322], fill=(40, 18, 18),
+              outline=tuple(int(v * a0) for v in RED))
+        txt(d, (140, 274), "WATCHDOG OFF", font(F_BOLD, 28),
+            tuple(int(v * a0) for v in RED))
+        panel(d, [1000, 250, 1824, 322], fill=(14, 36, 30),
+              outline=tuple(int(v * a0) for v in TEAL))
+        txt(d, (1044, 274), "WATCHDOG ON", font(F_BOLD, 28),
+            tuple(int(v * a0) for v in TEAL))
+
+    y = 342
+    for i, (label, vo, vn) in enumerate(rows):
+        a = appear(t, 1.0 + i * 0.75, 0.5)
+        if a <= 0:
+            y += 68
+            continue
+        panel(d, [96, y, 1824, y + 58], outline=tuple(int(v * a) for v in LINE))
+        txt(d, (140, y + 18), label, font(F_SANS, 23), tuple(int(v * a) for v in DIM))
+        # off value (red), on value (teal)
+        txt(d, (700, y + 14), vo, font(F_BOLD, 27), tuple(int(v * a) for v in RED),
+            anchor="ra")
+        txt(d, (1220, y + 14), vn, font(F_BOLD, 27), tuple(int(v * a) for v in TEAL),
+            anchor="ra")
+        y += 68
+
+    # verdict line
+    a2 = appear(t, 7.4, 0.7)
+    if a2 > 0:
+        panel(d, [96, 828, 1824, 944], fill=(14, 36, 30),
+              outline=tuple(int(v * a2) for v in TEAL))
+        para(d, (136, 856),
+             "Off: drift reaches 1.00 and nothing is caught. On: the agent is "
+             "quarantined six times, rolled back to a healthy checkpoint six "
+             "times, and twenty claims are routed to a human instead of being "
+             "wrongly decided.",
+             font(F_SANS, 24), tuple(int(v * a2) for v in FG), 1640, 30)
+
+    # labelling note, always on screen for the whole scene
+    a3 = appear(t, 9.0, 0.6)
+    if a3 > 0:
+        txt(d, (96, 962),
+            "Deterministic, scripted MiroFish-inspired rehearsal — not a live "
+            "MiroFish simulation.",
+            font(F_SANS, 20), tuple(int(v * a3) for v in DIM))
+
+
 def sc_metrics(d, t, E):
     m = E["drift"]["metrics"]
     header(d, "Results", "One session, four tickets", TEAL)
@@ -706,15 +852,17 @@ SCENES = [
     ("04-policy", sc_policy),
     ("05-trust", sc_trust),
     ("06-allowlist", sc_allowlist),
-    ("07-s1", sc_s1),
-    ("08-s2", sc_s2),
-    ("09-s3", sc_s3),
-    ("10-drift", sc_drift),
-    ("11-verify", sc_verify),
-    ("12-ledger", sc_ledger),
-    ("13-metrics", sc_metrics),
-    ("14-honest", sc_honest),
-    ("15-close", sc_close),
+    ("07-s1", sc_s1),          # valid case
+    ("08-s2", sc_s2),          # injected unsafe case + guard veto
+    ("09-jev", sc_jev),        # judgment layer, then the guard's veto
+    ("10-s3", sc_s3),          # policy gap
+    ("11-drift", sc_drift),    # short-horizon drift + checkpoint restore
+    ("12-rehearsal", sc_rehearsal),  # 36-ticket long-horizon comparison
+    ("13-verify", sc_verify),
+    ("14-ledger", sc_ledger),
+    ("15-metrics", sc_metrics),
+    ("16-honest", sc_honest),
+    ("17-close", sc_close),
 ]
 
 

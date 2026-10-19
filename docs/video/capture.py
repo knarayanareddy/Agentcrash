@@ -47,6 +47,15 @@ def main():
     fixtures = {f["ticketId"]: f for f in meta["fixtures"]}
     reset_db(psql)
 
+    # The rehearsal needs no server: it is deterministic computation over the
+    # 36 scenario tickets. Refresh it straight from the engine.
+    import pathlib
+    repo = pathlib.Path(OUT).parent.parent.parent
+    reh = subprocess.run(
+        ["npx", "tsx", "docs/video/rehearsal.ts"],
+        cwd=repo, capture_output=True, text=True, check=True)
+    rehearsal = json.loads(reh.stdout)
+
     session = None
     runs = []
     for tid in ["TKT-4401", "TKT-4402", "TKT-4403"]:
@@ -108,6 +117,7 @@ def main():
         "meta": meta,
         "runs": runs,
         "drift": drift,
+        "rehearsal": rehearsal,
         "workpaper": workpaper,
         "verify": {
             "clean": clean,
