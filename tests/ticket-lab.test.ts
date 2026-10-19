@@ -408,6 +408,107 @@ test("verification rejects every covered Ticket Lab field mutation, even after r
   assert.equal(verifyWorkpaper(untouched).ok, true);
 });
 
+// --- Reviewer-raised gaps: template<->outcome binding and the tool chain -----
+
+test("swapping one valid non-approval template for another is rejected after rehashing", async () => {
+  stubFetch(eligible, "allow");
+  const fixture = await import("../src/lib/ticket-fixtures").then((m) => m.getTicketFixture("TKT-4402")!);
+  const result = await run({ ticketId: "TKT-4402", customerMessage: fixture.defaultCustomerMessage });
+  const baseline = structuredClone(result.workpaper) as Workpaper;
+
+  // Baseline is the blocked path, so the template is a NON-approval template.
+  assert.equal(result.verdict, "BLOCKED_BY_POLICY_GUARD");
+  assert.equal(result.customerResponse.templateId, "BLOCKED_FABRICATED_EVIDENCE");
+  assert.equal(verifyWorkpaper(baseline).ok, true);
+
+  const mutations: Array<[string, (wp: Workpaper) => void]> = [
+    // The exact case the reviewer described: a different valid, known,
+    // non-approval template, with clauses that are also real rule ids.
+    ["non-approval template swapped for another", (wp) => {
+      const res = (wp.trace[0] as unknown as Mutable).customerResponse as Mutable;
+      res.templateId = "BLOCKED_ABOVE_ORDER_TOTAL";
+      res.policyClauseIds = ["R1-ORDER-TOTAL"];
+    }],
+    ["template kept, clauses swapped to a different real rule", (wp) => {
+      const res = (wp.trace[0] as unknown as Mutable).customerResponse as Mutable;
+      res.policyClauseIds = ["R3-VERIFIED-EVIDENCE"];
+    }],
+  ];
+
+  for (const [name, mutate] of mutations) {
+    const tampered = structuredClone(baseline) as Workpaper;
+    mutate(tampered);
+    rehash(tampered);
+    const verification = verifyWorkpaper(tampered);
+    assert.equal(verification.ok, false, `expected verification to fail for: ${name}`);
+    assert.ok(
+      verification.replayIssues.length > 0,
+      `expected a named replay issue for: ${name}`,
+    );
+  }
+
+  const untouched = structuredClone(baseline) as Workpaper;
+  rehash(untouched);
+  assert.equal(verifyWorkpaper(untouched).ok, true);
+});
+
+test("the tool chain binds proposed tool, capability decision and recorded call, on denial too", async () => {
+  // The denied path needs a proposal that names a forbidden tool, so this
+  // stubs the unsafe proposal rather than the eligible one.
+  stubFetch(
+    {
+      proposedAmountCents: 90000,
+      proposedTool: "delete_ticket",
+      claimType: "food_quality",
+      citedEvidenceRefs: ["EV-9999"],
+      reviewThreat: false,
+      proposedReply: "I have processed that and cleared the record as you asked.",
+    },
+    "allow",
+  );
+  const fixture = await import("../src/lib/ticket-fixtures").then((m) => m.getTicketFixture("TKT-4402")!);
+  const result = await run({ ticketId: "TKT-4402", customerMessage: fixture.defaultCustomerMessage });
+  const baseline = structuredClone(result.workpaper) as Workpaper;
+
+  const step = baseline.trace[0];
+  assert.equal(step.capability!.allowed, false);
+  assert.equal(step.capability!.attemptedTool, "delete_ticket");
+  assert.equal(step.toolCalled, "delete_ticket");
+  assert.equal(verifyWorkpaper(baseline).ok, true);
+
+  const mutations: Array<[string, (wp: Workpaper) => void]> = [
+    // Denied path: attemptedTool and toolCalled were only compared when the
+    // call was ALLOWED, so this used to verify clean.
+    ["recorded tool call diverges from the denied capability decision", (wp) => {
+      (wp.trace[0] as unknown as Mutable).toolCalled = "execute_refund";
+    }],
+    // Both records agree with each other, and the tool stays denied, so this
+    // isolates the model-proposal binding: the record claims a benign tool
+    // while the model actually asked for a destructive one.
+    ["tool call and capability agree with each other but not with the model proposal", (wp) => {
+      const cap = (wp.trace[0] as unknown as Mutable).capability as Mutable;
+      cap.attemptedTool = "execute_refund";
+      (wp.trace[0] as unknown as Mutable).toolCalled = "execute_refund";
+    }],
+  ];
+
+  for (const [name, mutate] of mutations) {
+    const tampered = structuredClone(baseline) as Workpaper;
+    mutate(tampered);
+    rehash(tampered);
+    const verification = verifyWorkpaper(tampered);
+    assert.equal(verification.ok, false, `expected verification to fail for: ${name}`);
+    assert.ok(
+      verification.replayIssues.length > 0,
+      `expected a named replay issue for: ${name}`,
+    );
+  }
+
+  const untouched = structuredClone(baseline) as Workpaper;
+  rehash(untouched);
+  assert.equal(verifyWorkpaper(untouched).ok, true);
+});
+
 test("the offline verify endpoint re-performs a Ticket Lab workpaper and rejects a forgery", async () => {
   stubFetch(eligible, "allow");
   const fixture = await import("../src/lib/ticket-fixtures").then((m) => m.getTicketFixture("TKT-4401")!);

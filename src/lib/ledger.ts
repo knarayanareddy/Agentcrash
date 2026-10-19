@@ -8,9 +8,14 @@ import {
   demoPolicyProvenance,
 } from "@/lib/demo-policy";
 import { evaluatePolicyGuard, validatePolicyGuardInput, type PolicyGuardInput } from "@/lib/policy-guard";
-import { TOOL_ALLOWLIST } from "@/lib/capability";
+import { TOOL_ALLOWLIST, UNSPECIFIED_TOOL } from "@/lib/capability";
 import { getTicketFixture } from "@/lib/ticket-fixtures";
-import { APPROVAL_TEMPLATE_IDS, RESPONSE_TEMPLATE_IDS, type ResponseTemplateId } from "@/lib/response-templates";
+import {
+  APPROVAL_TEMPLATE_IDS,
+  RESPONSE_TEMPLATE_IDS,
+  approvedCustomerResponse,
+  type ResponseTemplateId,
+} from "@/lib/response-templates";
 
 /** Policy provenance stamped on a decision: which policy, which version, which bytes. */
 export type PolicyProvenance = {
@@ -431,7 +436,18 @@ function replayTicketLabEvent(event: TraceEvent): { ok: boolean; issues: string[
   const onAllowlist = (TOOL_ALLOWLIST as readonly string[]).includes(capability.attemptedTool);
   if (!onAllowlist && capability.allowed) at(`capability allowed a tool that is not on the allowlist: ${capability.attemptedTool}`);
   if (!onAllowlist && ledger) at("mock ledger entry recorded for a denied capability");
-  if (capability.allowed && capability.attemptedTool !== event.toolCalled) at("capability decision does not match the recorded tool call");
+
+  // The tool chain must hold on denial as well as on approval. Binding these
+  // only when the call was allowed left the security-critical path — a refused
+  // tool — completely unbound, so a record could name a benign tool while the
+  // model had asked for a destructive one.
+  if (capability.attemptedTool !== event.toolCalled) {
+    at(`capability decision (${capability.attemptedTool}) does not match the recorded tool call (${event.toolCalled})`);
+  }
+  const expectedDispatched = proposal.proposedTool || UNSPECIFIED_TOOL;
+  if (expectedDispatched !== event.toolCalled) {
+    at(`recorded tool call (${event.toolCalled}) is not the tool the model proposed (${proposal.proposedTool || "<empty>"})`);
+  }
 
   // 5. A side effect requires every gate to have been green.
   if (ledger) {
@@ -458,6 +474,29 @@ function replayTicketLabEvent(event: TraceEvent): { ok: boolean; issues: string[
   if (!isApproval && event.verdict === "ALLOW") at("ALLOW verdict did not use an approval template");
   for (const clause of response.policyClauseIds) {
     if (!DEMO_RULE_IDS.includes(clause)) at(`customer response cites unknown clause ${clause}`);
+  }
+
+  // Checking the fields individually left the template swappable:
+  // BLOCKED_FABRICATED_EVIDENCE -> BLOCKED_ABOVE_ORDER_TOTAL passes, because
+  // both are known templates, neither is an approval template, and R1 is a real
+  // rule id. So re-perform the response, exactly as the guard is re-performed,
+  // and require the template, clauses and text to match this outcome.
+  // The workpaper record stores the template id and clauses only, not the
+  // rendered text. Deriving the rule lists from the recorded findings is
+  // exactly how evaluatePolicyGuard computes them (policy-guard.ts:155-156),
+  // so this reproduces the same call the producer made.
+  const expectedResponse = approvedCustomerResponse({
+    verdict: event.verdict,
+    blockingRuleIds: guard.findings.filter((f) => f.disposition === "BLOCK").map((f) => f.ruleId),
+    reviewRuleIds: guard.findings.filter((f) => f.disposition === "REVIEW").map((f) => f.ruleId),
+    approvedAmountCents: ledger ? ledger.amountCents : null,
+    ticketId: String(event.ticketRef ?? ""),
+  });
+  if (expectedResponse.templateId !== response.templateId) {
+    at(`customer response template ${response.templateId} is not the template this outcome produces (expected ${expectedResponse.templateId})`);
+  }
+  if (expectedResponse.policyClauseIds.join(",") !== response.policyClauseIds.join(",")) {
+    at(`customer response clauses [${response.policyClauseIds.join(", ")}] do not match this outcome (expected [${expectedResponse.policyClauseIds.join(", ")}])`);
   }
 
   // 7. The checkpoint record must agree with the rollback actually performed.

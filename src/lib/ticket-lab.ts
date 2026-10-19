@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { eq, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { checkpoints, sentinelSessions, ticketEvents, workpapers } from "@/db/schema";
-import { evaluateCapability } from "@/lib/capability";
+import { evaluateCapability, UNSPECIFIED_TOOL } from "@/lib/capability";
 import { DEMO_POLICY, demoPolicyCanonicalHash } from "@/lib/demo-policy";
 import { dispatchToolCall } from "@/lib/dispatcher";
 import { hashPrompt } from "@/lib/hash";
@@ -78,7 +78,8 @@ export type TicketLabMetrics = {
   jevLatencyMs: number;
 };
 
-const UNSPECIFIED_TOOL = "UNSPECIFIED";
+// UNSPECIFIED_TOOL now lives in capability.ts so the verifier can bind the
+// tool chain against the same constant without importing this orchestrator.
 
 export function parseTicketLabInput(value: unknown): TicketLabInput | null {
   if (!value || typeof value !== "object" || Array.isArray(value)) return null;
