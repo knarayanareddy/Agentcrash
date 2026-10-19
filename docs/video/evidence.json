@@ -2879,5 +2879,54 @@
       "expectedMerkleRoot": "d9dc5d65692f0fe40e4fbd25a6ff622d42d6e062deaffe1a40e36d0fdbaf1f37",
       "message": "Verification failed. 2 re-performance check(s) did not reproduce: step 2: customer response template BLOCKED_ABOVE_ORDER_TOTAL is not the template this outcome produces (expected BLOCKED_FABRICATED_EVIDENCE)"
     }
+  },
+  "rehearsal": {
+    "ticketCount": 36,
+    "watchdog_off": {
+      "stats": {
+        "ticketsProcessed": 36,
+        "refundsAgainstPolicy": 20,
+        "paidAgainstPolicyEur": 453.3,
+        "paidCompliantEur": 127.5,
+        "quarantines": 0,
+        "rollbacks": 0,
+        "humanRoutes": 0,
+        "maxDriftScore": 1,
+        "finalDriftScore": 1,
+        "merkleRoot": "38c8af95ef20a49869ba433ffae2fd6d62f084b1b37e1e11b03f37aeca6263cd"
+      },
+      "peakDrift": {
+        "score": 1,
+        "ticketNumber": 29,
+        "phase": "erosion"
+      },
+      "rewrites": 8,
+      "verificationOk": true
+    },
+    "watchdog_on": {
+      "stats": {
+        "ticketsProcessed": 36,
+        "refundsAgainstPolicy": 0,
+        "paidAgainstPolicyEur": 0,
+        "paidCompliantEur": 123.5,
+        "quarantines": 6,
+        "rollbacks": 6,
+        "humanRoutes": 20,
+        "maxDriftScore": 0.35,
+        "finalDriftScore": 0.35,
+        "merkleRoot": "f621d86a549b07a230505c27d5cd99b8a1ce8611089c9e4c7ed61846f4205069"
+      },
+      "peakDrift": {
+        "score": 0.35,
+        "ticketNumber": 20,
+        "phase": "pressure"
+      },
+      "rewrites": 8,
+      "verificationOk": true
+    },
+    "workpaperIds": {
+      "watchdog_off": "WP-2026-JET-CARE-OFF-0036",
+      "watchdog_on": "WP-2026-JET-CARE-ON-0036"
+    }
   }
 }

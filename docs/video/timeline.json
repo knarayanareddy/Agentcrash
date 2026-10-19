@@ -5,138 +5,156 @@
   "scenes": [
     {
       "scene": "01-title",
-      "samples": 513801,
-      "seconds": 11.6508,
-      "frames": 350,
+      "samples": 501454,
+      "seconds": 11.3708,
+      "frames": 341,
       "start": 0.0,
-      "head": 0.35,
-      "tail": 0.55
+      "head": 0.3,
+      "tail": 0.32
     },
     {
       "scene": "02-problem",
-      "samples": 1217289,
-      "seconds": 27.6029,
-      "frames": 828,
-      "start": 11.6508,
-      "head": 0.35,
-      "tail": 0.55
+      "samples": 647886,
+      "seconds": 14.6913,
+      "frames": 441,
+      "start": 11.3708,
+      "head": 0.3,
+      "tail": 0.32
     },
     {
       "scene": "03-loop",
-      "samples": 1028873,
-      "seconds": 23.3305,
-      "frames": 700,
-      "start": 39.2537,
-      "head": 0.35,
-      "tail": 0.55
+      "samples": 599246,
+      "seconds": 13.5883,
+      "frames": 408,
+      "start": 26.0621,
+      "head": 0.3,
+      "tail": 0.32
     },
     {
       "scene": "04-policy",
-      "samples": 943881,
-      "seconds": 21.4032,
-      "frames": 642,
-      "start": 62.5842,
-      "head": 0.35,
-      "tail": 0.55
+      "samples": 638670,
+      "seconds": 14.4823,
+      "frames": 434,
+      "start": 39.6505,
+      "head": 0.3,
+      "tail": 0.32
     },
     {
       "scene": "05-trust",
-      "samples": 831241,
-      "seconds": 18.849,
-      "frames": 565,
-      "start": 83.9874,
-      "head": 0.35,
-      "tail": 0.55
+      "samples": 536782,
+      "seconds": 12.1719,
+      "frames": 365,
+      "start": 54.1328,
+      "head": 0.3,
+      "tail": 0.32
     },
     {
       "scene": "06-allowlist",
-      "samples": 814345,
-      "seconds": 18.4659,
-      "frames": 554,
-      "start": 102.8364,
-      "head": 0.35,
-      "tail": 0.55
+      "samples": 566990,
+      "seconds": 12.8569,
+      "frames": 386,
+      "start": 66.3047,
+      "head": 0.3,
+      "tail": 0.32
     },
     {
       "scene": "07-s1",
-      "samples": 1017609,
-      "seconds": 23.075,
-      "frames": 692,
-      "start": 121.3023,
-      "head": 0.35,
-      "tail": 0.55
+      "samples": 1005262,
+      "seconds": 22.7951,
+      "frames": 684,
+      "start": 79.1616,
+      "head": 0.3,
+      "tail": 0.32
     },
     {
       "scene": "08-s2",
-      "samples": 1233673,
-      "seconds": 27.9744,
-      "frames": 839,
-      "start": 144.3773,
-      "head": 0.35,
-      "tail": 0.55
+      "samples": 1221326,
+      "seconds": 27.6945,
+      "frames": 831,
+      "start": 101.9567,
+      "head": 0.3,
+      "tail": 0.32
     },
     {
-      "scene": "09-s3",
-      "samples": 592649,
-      "seconds": 13.4388,
-      "frames": 403,
-      "start": 172.3517,
-      "head": 0.35,
-      "tail": 0.55
+      "scene": "09-jev",
+      "samples": 636622,
+      "seconds": 14.4359,
+      "frames": 433,
+      "start": 129.6512,
+      "head": 0.3,
+      "tail": 0.32
     },
     {
-      "scene": "10-drift",
-      "samples": 517385,
-      "seconds": 11.7321,
-      "frames": 352,
-      "start": 185.7905,
-      "head": 0.35,
-      "tail": 0.55
+      "scene": "10-s3",
+      "samples": 580302,
+      "seconds": 13.1588,
+      "frames": 395,
+      "start": 144.087,
+      "head": 0.3,
+      "tail": 0.32
     },
     {
-      "scene": "11-verify",
-      "samples": 1132297,
-      "seconds": 25.6757,
-      "frames": 770,
-      "start": 197.5226,
-      "head": 0.35,
-      "tail": 0.55
+      "scene": "11-drift",
+      "samples": 505038,
+      "seconds": 11.4521,
+      "frames": 344,
+      "start": 157.2458,
+      "head": 0.3,
+      "tail": 0.32
     },
     {
-      "scene": "12-ledger",
-      "samples": 562441,
-      "seconds": 12.7538,
-      "frames": 383,
-      "start": 223.1983,
-      "head": 0.35,
-      "tail": 0.55
+      "scene": "12-rehearsal",
+      "samples": 1006798,
+      "seconds": 22.8299,
+      "frames": 685,
+      "start": 168.6979,
+      "head": 0.3,
+      "tail": 0.32
     },
     {
-      "scene": "13-metrics",
-      "samples": 1036553,
-      "seconds": 23.5046,
-      "frames": 705,
-      "start": 235.952,
-      "head": 0.35,
-      "tail": 0.55
+      "scene": "13-verify",
+      "samples": 1119950,
+      "seconds": 25.3957,
+      "frames": 762,
+      "start": 191.5278,
+      "head": 0.3,
+      "tail": 0.32
     },
     {
-      "scene": "14-honest",
-      "samples": 1109769,
-      "seconds": 25.1648,
-      "frames": 755,
-      "start": 259.4566,
-      "head": 0.35,
-      "tail": 0.55
+      "scene": "14-ledger",
+      "samples": 550094,
+      "seconds": 12.4738,
+      "frames": 374,
+      "start": 216.9235,
+      "head": 0.3,
+      "tail": 0.32
     },
     {
-      "scene": "15-close",
-      "samples": 494857,
-      "seconds": 11.2212,
-      "frames": 337,
-      "start": 284.6215,
-      "head": 0.35,
-      "tail": 0.55
+      "scene": "15-metrics",
+      "samples": 1024206,
+      "seconds": 23.2246,
+      "frames": 697,
+      "start": 229.3973,
+      "head": 0.3,
+      "tail": 0.32
+    },
+    {
+      "scene": "16-honest",
+      "samples": 1097422,
+      "seconds": 24.8849,
+      "frames": 747,
+      "start": 252.6219,
+      "head": 0.3,
+      "tail": 0.32
+    },
+    {
+      "scene": "17-close",
+      "samples": 482510,
+      "seconds": 10.9413,
+      "frames": 328,
+      "start": 277.5068,
+      "head": 0.3,
+      "tail": 0.32
     }
   ]
 }

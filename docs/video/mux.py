@@ -22,13 +22,14 @@ FF = "/tmp/vid/lib/python3.11/site-packages/imageio_ffmpeg/binaries/ffmpeg-linux
 FPS = 30
 RATE = 44100
 CH = 2
-HEAD = 0.35   # seconds of silence before a clip
-TAIL = 0.55   # seconds of silence after a clip
+HEAD = 0.30   # seconds of silence before a clip
+TAIL = 0.32   # seconds of silence after a clip
 
 SCENES = [
     "01-title", "02-problem", "03-loop", "04-policy", "05-trust",
-    "06-allowlist", "07-s1", "08-s2", "09-s3", "10-drift",
-    "11-verify", "12-ledger", "13-metrics", "14-honest", "15-close",
+    "06-allowlist", "07-s1", "08-s2", "09-jev", "10-s3",
+    "11-drift", "12-rehearsal", "13-verify", "14-ledger", "15-metrics",
+    "16-honest", "17-close",
 ]
 
 # A scene with no narration is skipped. To show one as a silent card instead,
