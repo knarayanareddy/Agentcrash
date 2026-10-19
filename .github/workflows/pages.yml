@@ -7,9 +7,14 @@ name: Deploy Pages
 # Rebuild the bundle after changing any src/lib policy module:
 #   npm run pages:build
 
+# Manual only. Enabling GitHub Pages requires a one-time click in
+# Settings -> Pages that an integration token cannot perform, so this must not
+# run on every push (it would fail until Pages is enabled).
+#
+# To use: Settings -> Pages -> Source: "GitHub Actions", then run this workflow
+# from the Actions tab. If you instead chose "Deploy from a branch" (branch
+# arena/378e58f3-agentcrash, folder /docs) you do not need this at all.
 on:
-  push:
-    branches: [arena/378e58f3-agentcrash]
   workflow_dispatch:
 
 permissions:
