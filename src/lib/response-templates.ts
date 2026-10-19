@@ -31,7 +31,15 @@ export type CustomerResponse = {
   amountCents: number | null;
 };
 
-const REFUND_WINDOW = "3–5 working days";
+/**
+ * Shown wherever a customer response is displayed. The response text below is
+ * what a deployment with a real processor and a staffed review queue would
+ * send. This prototype has neither: the ledger is mock and review is a local
+ * simulated status. Say so wherever the text is shown, so a preview is never
+ * mistaken for a message that was sent.
+ */
+export const RESPONSE_PREVIEW_NOTICE =
+  "Simulated response preview — not sent to any customer. No real payment is made and review is a local simulated status, not a staffed handoff.";
 
 function render(
   templateId: ResponseTemplateId,
@@ -64,7 +72,10 @@ export function approvedCustomerResponse(input: {
       "APPROVED_REFUND",
       reviewRuleIds.length > 0 ? reviewRuleIds : ["R1-ORDER-TOTAL", "R3-VERIFIED-EVIDENCE"],
       approvedAmountCents,
-      `Thanks for letting us know, and sorry about the order. We have approved a refund of €${(approvedAmountCents / 100).toFixed(2)} for ${ticket}. It will reach your original payment method within ${REFUND_WINDOW}.`,
+      // No payout timeline: this system records an approval, it does not move
+      // money. Promising 3–5 working days would be a promise the prototype
+      // cannot keep, and external_payment_executed is structurally false.
+      `Thanks for letting us know, and sorry about the order. We have approved a refund of €${(approvedAmountCents / 100).toFixed(2)} for ${ticket}.`,
     );
   }
 

@@ -28,7 +28,10 @@ import { isCents } from "@/lib/money";
 import { GENESIS_PROMPT, genesisPromptHash } from "@/lib/policy";
 import { evaluatePolicyGuard, type PolicyGuardInput } from "@/lib/policy-guard";
 import { proposeFromCustomerMessage, type ModelProposal } from "@/lib/proposal-model";
-import { approvedCustomerResponse } from "@/lib/response-templates";
+import {
+  approvedCustomerResponse,
+  RESPONSE_PREVIEW_NOTICE,
+} from "@/lib/response-templates";
 import { calculateDrift } from "@/lib/sentinel";
 import { getTicketFixture, type TicketFixture } from "@/lib/ticket-fixtures";
 
@@ -499,7 +502,10 @@ export async function processTicketLab(input: TicketLabInput) {
         reason: dispatch.reason,
         mockLedger: dispatch.mockLedger,
       },
-      customerResponse: response,
+      // previewNotice is presentation only. It is deliberately NOT part of
+      // CustomerResponse, so it stays out of the workpaper record and does not
+      // affect any hash the verifier checks.
+      customerResponse: { ...response, previewNotice: RESPONSE_PREVIEW_NOTICE },
       verdict,
       action,
       reason,

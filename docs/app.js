@@ -167,7 +167,10 @@
       (response.policyClauseIds.length
         ? " · clauses " + esc(response.policyClauseIds.join(", "))
         : " · no policy clause cited") +
-      "</div><p>" + esc(response.text) + "</p></div>";
+      '</div><p class="notice">Simulated response preview — not sent to any ' +
+      'customer. No real payment is made and review is a local simulated ' +
+      'status, not a staffed handoff.</p>' +
+      "<p>" + esc(response.text) + "</p></div>";
 
     if (verdict === "ALLOW") {
       html += '<div class="verdict" style="margin-top:14px;border-color:var(--green)">' +

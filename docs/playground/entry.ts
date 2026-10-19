@@ -35,6 +35,7 @@ import {
 import {
   approvedCustomerResponse,
   RESPONSE_TEMPLATE_IDS,
+  RESPONSE_PREVIEW_NOTICE,
 } from "@/lib/response-templates";
 import { scanCustomerMessage, MAX_MESSAGE_CHARS } from "@/lib/message-signals";
 import { formatEur, eurToCents, centsToEur, isCents } from "@/lib/money";
@@ -56,6 +57,7 @@ export {
   TOOL_ALLOWLIST,
   approvedCustomerResponse,
   RESPONSE_TEMPLATE_IDS,
+  RESPONSE_PREVIEW_NOTICE,
   scanCustomerMessage,
   MAX_MESSAGE_CHARS,
   formatEur,
