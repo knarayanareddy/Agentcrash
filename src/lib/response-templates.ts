@@ -45,7 +45,7 @@ function render(
     amountCents,
     text: `${body}\n\nReference: ${DEMO_POLICY.policyId} v${DEMO_POLICY.version} · ${
       policyClauseIds.length > 0 ? `clauses ${policyClauseIds.join(", ")}` : "no policy clause cited; escalated by the judgment layer"
-    }.''`,
+    }.`,
   };
 }
 
