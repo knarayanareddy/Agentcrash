@@ -92,6 +92,15 @@
       "start": 185.7905,
       "head": 0.35,
       "tail": 0.55
+    },
+    {
+      "scene": "15-close",
+      "samples": 308700,
+      "seconds": 7.0,
+      "frames": 210,
+      "start": 197.5226,
+      "head": 0.35,
+      "tail": 0.55
     }
   ]
 }

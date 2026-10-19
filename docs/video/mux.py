@@ -31,6 +31,11 @@ SCENES = [
     "11-verify", "12-ledger", "13-metrics", "14-honest", "15-close",
 ]
 
+# Scenes with no narration: shown as silent title cards at this fixed length.
+SILENT = {
+    "15-close": 7.0,
+}
+
 
 def decode(path):
     """mp3 -> raw s16le stereo 44.1k PCM."""
@@ -49,13 +54,18 @@ def main():
     for name in SCENES:
         mp3 = f"{ROOT}/narration/{name}.mp3"
         if not os.path.exists(mp3):
-            print(f"  MISSING {name}.mp3 — skipping")
-            continue
-
-        head = b"\x00" * int(HEAD * RATE) * 4
-        body = decode(mp3)
-        tail = b"\x00" * int(TAIL * RATE) * 4
-        block = head + body + tail
+            if name in SILENT:
+                body = b"\x00" * int(SILENT[name] * RATE) * 4
+                block = body
+                print(f"  SILENT  {name:12} {SILENT[name]:6.2f}s  (no narration)")
+            else:
+                print(f"  MISSING {name}.mp3 — skipping")
+                continue
+        else:
+            head = b"\x00" * int(HEAD * RATE) * 4
+            body = decode(mp3)
+            tail = b"\x00" * int(TAIL * RATE) * 4
+            block = head + body + tail
 
         start_s = cursor_s
         pcm += block
