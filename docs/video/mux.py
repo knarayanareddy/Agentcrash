@@ -31,10 +31,9 @@ SCENES = [
     "11-verify", "12-ledger", "13-metrics", "14-honest", "15-close",
 ]
 
-# Scenes with no narration: shown as silent title cards at this fixed length.
-SILENT = {
-    "15-close": 7.0,
-}
+# A scene with no narration is skipped. To show one as a silent card instead,
+# add it here with its length in seconds.
+SILENT = {}
 
 
 def decode(path):

@@ -94,11 +94,47 @@
       "tail": 0.55
     },
     {
-      "scene": "15-close",
-      "samples": 308700,
-      "seconds": 7.0,
-      "frames": 210,
+      "scene": "11-verify",
+      "samples": 1132297,
+      "seconds": 25.6757,
+      "frames": 770,
       "start": 197.5226,
+      "head": 0.35,
+      "tail": 0.55
+    },
+    {
+      "scene": "12-ledger",
+      "samples": 562441,
+      "seconds": 12.7538,
+      "frames": 383,
+      "start": 223.1983,
+      "head": 0.35,
+      "tail": 0.55
+    },
+    {
+      "scene": "13-metrics",
+      "samples": 1036553,
+      "seconds": 23.5046,
+      "frames": 705,
+      "start": 235.952,
+      "head": 0.35,
+      "tail": 0.55
+    },
+    {
+      "scene": "14-honest",
+      "samples": 1109769,
+      "seconds": 25.1648,
+      "frames": 755,
+      "start": 259.4566,
+      "head": 0.35,
+      "tail": 0.55
+    },
+    {
+      "scene": "15-close",
+      "samples": 494857,
+      "seconds": 11.2212,
+      "frames": 337,
+      "start": 284.6215,
       "head": 0.35,
       "tail": 0.55
     }

@@ -1,6 +1,6 @@
 # Demo video
 
-`docs/saaf-demo.mp4` — 3:24, 1920×1080, h264 + aac.
+`docs/saaf-demo.mp4` — 4:56, 1920×1080, h264 + aac, 13 MB. All fifteen scenes.
 
 ## What it records
 
@@ -20,12 +20,11 @@ on screen is invented output.
 | 08 s2 | TKT-4402 → `BLOCKED_BY_POLICY_GUARD`, `delete_ticket` denied |
 | 09 s3 | TKT-4403 → `ROUTE_TO_HUMAN` |
 | 10 drift | injected instruction + memory → quarantined, checkpoint restored |
-| 15 close | silent outro card |
-
-**Scenes 11–14 (workpaper tamper, template swap, metrics, scope and limits) are
-written and render correctly but are not yet in the mp4** — the text-to-speech
-allowance for the session was exhausted at ten clips. They are the next thing to
-add; see below.
+| 11 verify | tamper the committed amount, recompute every hash → rejected |
+| 12 ledger | swap a blocked template, rehash → rejected |
+| 13 metrics | one session, four tickets |
+| 14 honest | scope and limits |
+| 15 close | the one-sentence claim |
 
 ## Recording provenance
 
@@ -55,12 +54,10 @@ the picture can never drift from the narration. `check_layout.py` renders every
 scene and fails if drawn content leaves the safe area — it caught a real 16px
 overflow in the scenario frame.
 
-`narration.pcm` is generated and gitignored (~36 MB). Re-run `mux.py` to rebuild
+`narration.pcm` is generated and gitignored (~52 MB). Re-run `mux.py` to rebuild
 it from `narration/*.mp3`.
 
-## To finish scenes 11–14
+Only `capture.py` talks to the app. `evidence.json` is committed, so a pure
+re-render after a script tweak needs no database and no server — just `mux.py`
+and `render.py`. Re-run `capture.py` only to refresh the captured evidence.
 
-Drop `11-verify.mp3`, `12-ledger.mp3`, `13-metrics.mp3` and `14-honest.mp3` into
-`narration/`, then re-run `mux.py`, `render.py` and `check_layout.py`. The scene
-functions (`sc_verify`, `sc_ledger`, `sc_metrics`, `sc_honest`) already exist and
-are already registered in `SCENES`.
