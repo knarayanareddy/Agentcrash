@@ -1,6 +1,6 @@
 # Demo video
 
-`docs/saaf-demo.mp4` — 4:48, 1920×1080, h264 + aac, 13 MB. All seventeen scenes.
+`docs/saaf-demo.mp4` — 4:23, 1920×1080, h264 + aac, 12 MB. Sixteen scenes.
 
 For the full production record — scene-by-scene timing, where every value comes
 from, and how the 4:48 was reached — see `PRODUCTION.md`. To refresh the video
@@ -29,13 +29,18 @@ on screen is invented output.
 | 13 | verify | tamper the committed amount, recompute every hash → rejected |
 | 14 | ledger | swap a blocked template, rehash → rejected |
 | 15 | metrics | one session, four tickets |
-| 16 | honest | scope and limits |
-| 17 | close | the claim, restated |
+| 16 | close | the claim, restated |
 
 Scenes 09 and 12 sit inside the flow rather than at the end of it: the judgment
 layer comes right after the guard veto it is subject to, and the rehearsal right
 after the single-ticket drift, so short-horizon recovery reads into
 long-horizon.
+
+A scope-and-limits scene (16-honest) was cut from this version. Its narration is
+kept at `narration/16-honest.mp3` and its scene function is `sc_honest`; restore
+it by adding `"16-honest"` to `SCENES` in `mux.py` and `("16-honest", sc_honest)`
+to `SCENES` in `render.py`. The disclosures it carried still appear on the
+landing page and in `docs/LIVE-VERIFICATION.md`.
 
 ## Recording provenance
 

@@ -139,20 +139,11 @@
       "tail": 0.32
     },
     {
-      "scene": "16-honest",
-      "samples": 1097422,
-      "seconds": 24.8849,
-      "frames": 747,
-      "start": 252.6219,
-      "head": 0.3,
-      "tail": 0.32
-    },
-    {
-      "scene": "17-close",
+      "scene": "16-close",
       "samples": 482510,
       "seconds": 10.9413,
       "frames": 328,
-      "start": 277.5068,
+      "start": 252.6219,
       "head": 0.3,
       "tail": 0.32
     }

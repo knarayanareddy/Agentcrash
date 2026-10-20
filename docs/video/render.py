@@ -861,8 +861,7 @@ SCENES = [
     ("13-verify", sc_verify),
     ("14-ledger", sc_ledger),
     ("15-metrics", sc_metrics),
-    ("16-honest", sc_honest),
-    ("17-close", sc_close),
+    ("16-close", sc_close),
 ]
 
 
