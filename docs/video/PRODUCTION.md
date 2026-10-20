@@ -2,7 +2,7 @@
 
 Everything about how `docs/saaf-demo.mp4` was made, and how to remake it.
 
-**Current cut: 4:23.56, 1920×1080, h264 + aac, 12 MB, 16 scenes.**
+**Current cut: 4:23.10, 1920×1080, h264 + aac, 12 MB, 16 scenes.**
 
 A scope-and-limits scene was in earlier cuts and has been removed; see
 [section 6](#6-retired-scenes).
@@ -213,13 +213,23 @@ disclosure is moot.
 
 ## 5. Narration
 
-17 clips in `docs/video/narration/`, named `<position>-<scene>.mp3`. Positions
+**Every spoken number is transcribed and cross-checked in
+`docs/video/narration/TRANSCRIPT.md`.** Numbers read aloud are an easy place for
+a factor-of-ten slip, and one happened: an earlier cut said "two hundred and
+fifteen euros" of prevented exposure where the evidence says €21.59
+(`simulatedExposurePreventedCents: 2159`). The on-screen figure was always
+correct; only the spoken value was wrong. It is fixed, and the transcript now
+exists so the same class of error is checkable rather than silent.
+
+16 clips in `docs/video/narration/`, named `<position>-<scene>.mp3`. Positions
 follow the scene order in section 2, so inserting a scene means renaming files,
 not editing code — the order lives in one list in `mux.py` and one in
 `render.py`, which must be kept in step.
 
 Regenerating a clip in place is safe: `mux.py` measures whatever is there and
 recomputes the frame budget.
+
+When you change a narration, update `TRANSCRIPT.md` in the same commit.
 
 
 ---
