@@ -2,7 +2,10 @@
 
 Everything about how `docs/saaf-demo.mp4` was made, and how to remake it.
 
-**Current cut: 4:48.45, 1920×1080, h264 + aac, 13 MB, 17 scenes.**
+**Current cut: 4:23.56, 1920×1080, h264 + aac, 12 MB, 16 scenes.**
+
+A scope-and-limits scene was in earlier cuts and has been removed; see
+[section 6](#6-retired-scenes).
 
 ---
 
@@ -70,8 +73,7 @@ caught two real overflows.
 | 13 | verify | 25.40 | tamper the committed amount, rehash → rejected |
 | 14 | ledger | 12.47 | swap a blocked template, rehash → rejected |
 | 15 | metrics | 23.22 | one session, four tickets |
-| 16 | honest | 24.88 | scope and limits |
-| 17 | close | 10.94 | the claim, restated |
+| 16 | close | 10.94 | the claim, restated |
 
 **Sequence rationale.** The cut follows one proposal end to end rather than
 touring features: valid case → injected unsafe case and guard veto → judgment
@@ -81,7 +83,8 @@ flow, not appended to it — Jev immediately after the veto it is subject to, th
 rehearsal immediately after the single-ticket drift so short-horizon reads into
 long-horizon.
 
-**How the 4:48 was reached.** The previous cut was 4:56 with 15 scenes. Two
+**How the 4:48 was reached** (before the scope-and-limits scene was later cut).
+The 15-scene version was 4:56. Two
 scenes were added (+37.8 s) and the time was recovered from conceptual
 exposition only — no product-demo scene was shortened:
 
@@ -97,6 +100,9 @@ exposition only — no product-demo scene was shortened:
 
 Net: 295.84 − 46.62 + 37.83 = **288.45 s (4:48)**, inside the 4:40–4:50 target
 that leaves margin under a five-minute limit.
+
+Removing the scope-and-limits scene (24.88 s) took the cut to **263.56 s
+(4:23.56)**.
 
 ---
 
@@ -180,8 +186,9 @@ was rendered from.
 Rendered from `evidence.json` captured against committed, pushed code. No value
 in the video depends on an uncommitted local change.
 
-Two caveats, stated on screen in scene 16 and on the landing page rather than
-hidden:
+Two caveats. Both remain on the landing page and in `LIVE-VERIFICATION.md`;
+within the video itself only the first is still stated on screen (in the
+rehearsal scene's standing label) after the scope-and-limits scene was cut:
 
 - **Proposal endpoint.** In this capture it was a local OpenAI-compatible test
   double, not a language model. The HTTP proposal path is real; the model is not.
@@ -190,6 +197,17 @@ hidden:
 The video does **not** claim the work prevents the three incidents named in
 scene 02. They are presented as motivating patterns, each mapped to a boundary
 SAAF closes, and the narration says so in substance.
+
+**Retaining accuracy after the cut.** The removed scene carried four statements
+that are no longer spoken in the video: that the policy and retailer are
+synthetic; that no real model is called in this recording; that prevented
+exposure is a counterfactual; and that verification is a consistency result
+rather than a signature. Two of these are still stated on screen elsewhere —
+scene 12 labels the rehearsal a scripted simulation, scene 07 labels the
+commit as simulated with no payment rail, and scene 15 states that no payment
+was made. The other two are not. If the video is shown where those claims could
+be relied on, restore the scene or re-capture with live keys so the model
+disclosure is moot.
 
 ---
 
@@ -202,3 +220,27 @@ not editing code — the order lives in one list in `mux.py` and one in
 
 Regenerating a clip in place is safe: `mux.py` measures whatever is there and
 recomputes the frame budget.
+
+
+---
+
+## 6. Retired scenes
+
+**`16-honest` — scope and limits (24.88 s), removed.**
+
+Its narration is retained at `narration/16-honest.mp3` and its scene function
+`sc_honest` is still in `render.py`, so restoring it costs no re-recording:
+
+```python
+# docs/video/mux.py
+SCENES = [..., "15-metrics", "16-honest", "17-close"]   # renumber close to 17
+
+# docs/video/render.py
+SCENES = [..., ("15-metrics", sc_metrics),
+              ("16-honest", sc_honest),
+              ("17-close", sc_close)]
+```
+
+Remember to move `narration/16-close.mp3` back to `17-close.mp3` to match.
+
+Restoring it returns the runtime to 4:48.45.

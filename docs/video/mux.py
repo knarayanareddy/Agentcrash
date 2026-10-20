@@ -29,8 +29,13 @@ SCENES = [
     "01-title", "02-problem", "03-loop", "04-policy", "05-trust",
     "06-allowlist", "07-s1", "08-s2", "09-jev", "10-s3",
     "11-drift", "12-rehearsal", "13-verify", "14-ledger", "15-metrics",
-    "16-honest", "17-close",
+    "16-close",
 ]
+
+# 16-honest (scope and limits) is retired from the cut. Its narration is kept
+# at narration/16-honest.mp3 and its scene function is sc_honest in render.py,
+# so restoring it is a one-line change here and in render.py's SCENES.
+RETIRED = ["16-honest"]
 
 # A scene with no narration is skipped. To show one as a silent card instead,
 # add it here with its length in seconds.
